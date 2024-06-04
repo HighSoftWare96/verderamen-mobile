@@ -1,4 +1,4 @@
-import 'package:flutter_hello_world/store/actions.dart';
+import 'package:verderamen_mobile/store/actions.dart';
 
 class AppState {
   final bool _isAuthenticated;

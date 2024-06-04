@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hello_world/store/actions.dart';
-import 'package:flutter_hello_world/store/reducer.dart';
+import 'package:verderamen_mobile/store/actions.dart';
+import 'package:verderamen_mobile/store/reducer.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 

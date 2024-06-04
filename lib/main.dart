@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
-import "package:flutter_hello_world/screens/login.dart";
-import "package:flutter_hello_world/store/middlewares.dart";
-import "package:flutter_hello_world/store/reducer.dart";
+import "package:verderamen_mobile/screens/login.dart";
+import "package:verderamen_mobile/store/middlewares.dart";
+import "package:verderamen_mobile/store/reducer.dart";
 import "package:flutter_redux/flutter_redux.dart";
 import "package:redux/redux.dart";
 
