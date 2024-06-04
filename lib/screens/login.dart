@@ -33,11 +33,11 @@ class _LoginScreenState extends State {
     });
     usernameController.addListener(() {
       StoreProvider.of<AppState>(context).dispatch(
-          AuthenticateUpdateAction(endpoint: usernameController.text));
+          AuthenticateUpdateAction(username: usernameController.text));
     });
     passwordController.addListener(() {
       StoreProvider.of<AppState>(context).dispatch(
-          AuthenticateUpdateAction(endpoint: passwordController.text));
+          AuthenticateUpdateAction(password: passwordController.text));
     });
   }
 
@@ -86,7 +86,9 @@ class _LoginScreenState extends State {
                                         height: 200,
                                         image: AssetImage(
                                             'assets/verderamen.png')),
-                                    const SizedBox(height: 20,),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
                                     TextFormField(
                                       controller: endpointController,
                                       decoration: const InputDecoration(
@@ -95,7 +97,9 @@ class _LoginScreenState extends State {
                                       ),
                                       validator: validatorRequired,
                                     ),
-                                    const SizedBox(height: 20,),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
                                     TextFormField(
                                       controller: usernameController,
                                       decoration: const InputDecoration(
@@ -104,7 +108,9 @@ class _LoginScreenState extends State {
                                       ),
                                       validator: validatorRequired,
                                     ),
-                                    const SizedBox(height: 20,),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
                                     TextFormField(
                                       enableSuggestions: false,
                                       autocorrect: false,
@@ -116,9 +122,11 @@ class _LoginScreenState extends State {
                                       ),
                                       validator: validatorRequired,
                                     ),
-                                    const SizedBox(height: 20,),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
                                     FilledButton(
-                                        onPressed: submitForm,
+                                        onPressed: () => submitForm(store),
                                         child: const Text('Invia'))
                                   ],
                                 ),
@@ -128,13 +136,32 @@ class _LoginScreenState extends State {
             }));
   }
 
-  submitForm() {
+  submitForm(Store<AppState> store) {
     if (_formKey.currentState!.validate()) {
       // If the form is valid, display a snackbar. In the real world,
       // you'd often call a server or save the information in a database.
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Login...')),
       );
+
+      store.dispatch(AuthenticateAction(onError: onError, onSuccess: onSuccess));
     }
+  }
+
+  onSuccess(Map telemetries) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Login OK!'),
+        backgroundColor: Colors.greenAccent,
+      ),
+    );
+  }
+
+  onError(Object error) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+          content: Text('API Error!', style: TextStyle(color: Colors.white),),
+           backgroundColor: Colors.redAccent),
+    );
   }
 }

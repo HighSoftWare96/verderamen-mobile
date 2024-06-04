@@ -11,7 +11,7 @@ void main() {
 
 class App extends StatelessWidget {
   final store = Store(reducer,
-      initialState: AppState.initialState(), middleware: middlewares);
+      initialState: AppState.initialState(), middleware: [middleware]);
 
   App({super.key});
 
@@ -24,9 +24,7 @@ class App extends StatelessWidget {
             darkTheme: ThemeData(
                 useMaterial3: true,
                 colorScheme: ColorScheme.fromSeed(
-                  seedColor: Colors.green,
-                  brightness: Brightness.dark
-                )),
+                    seedColor: Colors.green, brightness: Brightness.dark)),
             themeMode: ThemeMode.dark,
             home: LoginScreen()));
   }

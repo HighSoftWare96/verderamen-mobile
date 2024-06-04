@@ -7,10 +7,18 @@ class AuthenticateUpdateAction {
 }
 
 class AuthenticateAction {
+  void Function(Object e)? onError;
+  void Function(Map telemetries)? onSuccess;
+
+  AuthenticateAction({
+    this.onError,
+    this.onSuccess
+  });
 }
 
 class AuthenticateActionSuccess {
-  AuthenticateActionSuccess();
+  Map telemetries;
+  AuthenticateActionSuccess(this.telemetries);
 }
 
 class _ErrorAction {
