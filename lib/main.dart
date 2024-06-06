@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:verderamen_mobile/utils/alice.dart";
 import "package:verderamen_mobile/screens/login.dart";
 import "package:verderamen_mobile/store/middlewares.dart";
 import "package:verderamen_mobile/store/reducer.dart";
@@ -20,6 +21,7 @@ class App extends StatelessWidget {
     return StoreProvider(
         store: store,
         child: MaterialApp(
+            navigatorKey: alice.getNavigatorKey(),
             title: 'Verderamen',
             darkTheme: ThemeData(
                 useMaterial3: true,

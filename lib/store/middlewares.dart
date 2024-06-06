@@ -1,11 +1,11 @@
-import 'package:logger/logger.dart';
 import 'package:verderamen_mobile/api/verderamen.dart';
 import 'package:verderamen_mobile/store/actions.dart';
 import 'package:verderamen_mobile/store/reducer.dart';
 import 'package:redux/redux.dart';
+import 'package:verderamen_mobile/utils/logger.dart';
+import 'package:verderamen_mobile/utils/storage.dart';
 
 void middleware(Store<AppState> store, action, NextDispatcher next) {
-  var logger = Logger(level: Level.debug);
   if (action is AuthenticateAction) {
     getTelemetries(
             endpoint: store.state.endpoint,
@@ -16,6 +16,10 @@ void middleware(Store<AppState> store, action, NextDispatcher next) {
       if (action.onSuccess != null) {
         action.onSuccess!(telemetries);
       }
+      saveCredentialsForNextUse(
+          endpoint: store.state.endpoint,
+          username: store.state.username,
+          password: store.state.password);
       store.dispatch(AuthenticateActionSuccess(telemetries));
     }).catchError((Object e) {
       logger.e(e);
@@ -28,3 +32,12 @@ void middleware(Store<AppState> store, action, NextDispatcher next) {
 
   next(action);
 }
+
+void saveCredentialsForNextUse(
+    {required String endpoint,
+    required String username,
+    required String password}) async {
+      await setSecureKey('endpoint', endpoint);
+      await setSecureKey('username', username);
+      await setSecureKey('password', password);
+    }
