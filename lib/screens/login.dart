@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:verderamen_mobile/screens/dashboard.dart';
@@ -160,24 +161,26 @@ class _LoginScreenState extends State {
   }
 
   _tryInitialLogin() {
-    try {
-      _showLoadingOverlay(context);
-      // try initial login with stored credentials
-      Future.wait([
-        getSecureKey('endpoint'),
-        getSecureKey('username'),
-        getSecureKey('password')
-      ]).then((results) {
-        final [endpoint, username, password] = results;
-        StoreProvider.of<AppState>(context).dispatch(AuthenticateUpdateAction(
-            endpoint: endpoint, username: username, password: password));
-        StoreProvider.of<AppState>(context).dispatch(AuthenticateAction(
-            onSuccess: (Map telemetries) =>
-                _onSuccess(telemetries, silent: true)));
-      });
-    } catch (e) {
-      logger.e(e);
-    }
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      try {
+        _showLoadingOverlay(context);
+        // try initial login with stored credentials
+        Future.wait([
+          getSecureKey('endpoint'),
+          getSecureKey('username'),
+          getSecureKey('password')
+        ]).then((results) {
+          final [endpoint, username, password] = results;
+          StoreProvider.of<AppState>(context).dispatch(AuthenticateUpdateAction(
+              endpoint: endpoint, username: username, password: password));
+          StoreProvider.of<AppState>(context).dispatch(AuthenticateAction(
+              onSuccess: (Map telemetries) =>
+                  _onSuccess(telemetries, silent: true)));
+        });
+      } catch (e) {
+        logger.e(e);
+      }
+    });
   }
 
   _onSuccess(Map telemetries, {silent = false}) {
@@ -218,7 +221,8 @@ class _LoginScreenState extends State {
           top: 0,
           right: 0,
           left: 0,
-          child: Container(
+          child: Material(
+              child: Container(
             color: Colors.green.withAlpha(90),
             child: const Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -231,7 +235,7 @@ class _LoginScreenState extends State {
                     child: Text('Caricamento in corso...'))
               ],
             ),
-          ));
+          )));
     });
     Overlay.of(context).insert(_overlay!);
   }
