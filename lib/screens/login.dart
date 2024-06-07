@@ -5,6 +5,7 @@ import 'package:redux/redux.dart';
 import 'package:verderamen_mobile/screens/dashboard.dart';
 import 'package:verderamen_mobile/store/actions.dart';
 import 'package:verderamen_mobile/store/reducer.dart';
+import 'package:verderamen_mobile/utils/hooks.dart';
 import 'package:verderamen_mobile/utils/logger.dart';
 import 'package:verderamen_mobile/utils/storage.dart';
 
@@ -161,7 +162,7 @@ class _LoginScreenState extends State {
   }
 
   _tryInitialLogin() {
-    SchedulerBinding.instance.addPostFrameCallback((_) {
+    onFirstBuild((_) {
       try {
         _showLoadingOverlay(context);
         // try initial login with stored credentials
@@ -175,7 +176,10 @@ class _LoginScreenState extends State {
               endpoint: endpoint, username: username, password: password));
           StoreProvider.of<AppState>(context).dispatch(AuthenticateAction(
               onSuccess: (Map telemetries) =>
-                  _onSuccess(telemetries, silent: true)));
+                  _onSuccess(telemetries, silent: true),
+              onError: (_) {
+                _hideLoadingOverlay(context);
+              }));
         });
       } catch (e) {
         logger.e(e);

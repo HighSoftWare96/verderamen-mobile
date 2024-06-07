@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:verderamen_mobile/store/actions.dart';
 import 'package:verderamen_mobile/store/reducer.dart';
+import 'package:verderamen_mobile/utils/hooks.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -11,6 +13,14 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  @override
+  void initState() {
+    onFirstBuild((_) {
+      StoreProvider.of<AppState>(context).dispatch(StartPollingAction());
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

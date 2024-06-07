@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:verderamen_mobile/api/verderamen.dart';
 import 'package:verderamen_mobile/store/actions.dart';
 import 'package:verderamen_mobile/store/reducer.dart';
 import 'package:redux/redux.dart';
 import 'package:verderamen_mobile/utils/logger.dart';
 import 'package:verderamen_mobile/utils/storage.dart';
+
+Timer? pollingTimer;
 
 void middleware(Store<AppState> store, action, NextDispatcher next) {
   if (action is AuthenticateAction) {
@@ -16,10 +20,12 @@ void middleware(Store<AppState> store, action, NextDispatcher next) {
       if (action.onSuccess != null) {
         action.onSuccess!(telemetries);
       }
-      saveCredentialsForNextUse(
-          endpoint: store.state.endpoint,
-          username: store.state.username,
-          password: store.state.password);
+      if (!action.polling) {
+        saveCredentialsForNextUse(
+            endpoint: store.state.endpoint,
+            username: store.state.username,
+            password: store.state.password);
+      }
       store.dispatch(AuthenticateActionSuccess(telemetries));
     }).catchError((Object e) {
       logger.e(e);
@@ -28,6 +34,10 @@ void middleware(Store<AppState> store, action, NextDispatcher next) {
       }
       store.dispatch(AuthenticateActionError(e.toString()));
     });
+  } else if (action is StartPollingAction) {
+    poll(store);
+  } else if (action is StopPollingAction && pollingTimer != null) {
+    pollingTimer?.cancel();
   }
 
   next(action);
@@ -37,7 +47,15 @@ void saveCredentialsForNextUse(
     {required String endpoint,
     required String username,
     required String password}) async {
-      await setSecureKey('endpoint', endpoint);
-      await setSecureKey('username', username);
-      await setSecureKey('password', password);
-    }
+  await setSecureKey('endpoint', endpoint);
+  await setSecureKey('username', username);
+  await setSecureKey('password', password);
+}
+
+void poll(Store<AppState> store) {
+  pollingTimer = Timer(const Duration(seconds: 6), () {
+    store.dispatch(AuthenticateAction(polling: true));
+    pollingTimer = null;
+    poll(store);
+  });
+}

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:logger/logger.dart';
 import 'package:verderamen_mobile/utils/alice.dart';
 import 'package:verderamen_mobile/utils/logger.dart';
 
@@ -20,7 +19,7 @@ Future<Map> getTelemetries({
     var response = await client.get(uri, headers: {
       HttpHeaders.authorizationHeader: authHeader,
       HttpHeaders.contentTypeHeader: 'application/json'
-    }).timeout(const Duration(milliseconds: 1000));
+    });
     alice.onHttpResponse(response);
     if (response.statusCode != 200) {
       throw Exception('Invalid statusCode ${response.statusCode}!');
