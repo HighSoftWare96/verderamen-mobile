@@ -44,7 +44,7 @@ class _LoginScreenState extends State {
           AuthenticateUpdateAction(password: passwordController.text));
     });
 
-    // _tryInitialLogin();
+    _tryInitialLogin();
     super.initState();
   }
 
@@ -78,7 +78,7 @@ class _LoginScreenState extends State {
               left: 25,
               right: 25,
               top: MediaQuery.of(context).viewPadding.top +
-                  constraints.maxHeight * (.16),
+                  constraints.maxHeight * (.2),
             ),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -134,7 +134,7 @@ class _LoginScreenState extends State {
                           Form(
                             key: _formKey,
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 const SizedBox(
                                   height: 20,
@@ -173,7 +173,7 @@ class _LoginScreenState extends State {
                                   validator: validatorRequired,
                                 ),
                                 const SizedBox(
-                                  height: 100,
+                                  height: 50,
                                 ),
                                 ConstrainedBox(
                                     constraints:

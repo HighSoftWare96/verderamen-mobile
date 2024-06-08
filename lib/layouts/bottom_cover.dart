@@ -6,7 +6,7 @@ class BottomCoverLayout extends StatelessWidget {
   final Widget Function(BuildContext context, BoxConstraints constraints)
       bodyBuilder;
   final String backgroundImage;
-  final double coverHeightPercentage = .55;
+  final double coverHeightPercentage = .5;
 
   const BottomCoverLayout(
       {super.key,
