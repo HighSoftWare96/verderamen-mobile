@@ -26,4 +26,13 @@ setSecureKey(String key, String value) async {
   return value;
 }
 
-writeSecureKey() {}
+cleanup() async {
+  await _storage.deleteAll();
+}
+
+unsetSecureKey(String key) async {
+  if (secureKeys[key] == null) {
+    throw Exception('Invalid key $key');
+  }
+  await _storage.delete(key: secureKeys[key]!);
+}

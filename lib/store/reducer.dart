@@ -62,6 +62,8 @@ AppState reducer(AppState state, dynamic action) {
   } else if (action is AuthenticateActionError) {
     return AppState.copyWith(state,
         isAuthenticated: false, isLoadingAuth: false);
+  } else if (action is LogoutAction) {
+    return AppState.initialState();
   }
 
   return state;

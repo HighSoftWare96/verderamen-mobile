@@ -11,11 +11,7 @@ class AuthenticateAction {
   void Function(Object e)? onError;
   void Function(Map telemetries)? onSuccess;
 
-  AuthenticateAction({
-    this.polling = false,
-    this.onError,
-    this.onSuccess
-  });
+  AuthenticateAction({this.polling = false, this.onError, this.onSuccess});
 }
 
 class AuthenticateActionSuccess {
@@ -37,6 +33,10 @@ class StartPollingAction {}
 
 class StopPollingAction {}
 
-class LogoutAction {}
+class LogoutAction {
+  void Function()? onSuccess;
+
+  LogoutAction({this.onSuccess});
+}
 
 class LogoutCompleteAction {}

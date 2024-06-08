@@ -214,12 +214,18 @@ class _LoginScreenState extends State {
           getSecureKey('password')
         ]).then((results) {
           final [endpoint, username, password] = results;
-          StoreProvider.of<AppState>(context).dispatch(AuthenticateUpdateAction(
-              endpoint: endpoint, username: username, password: password));
-          StoreProvider.of<AppState>(context).dispatch(AuthenticateAction(
-              onSuccess: (Map telemetries) =>
-                  _onSuccess(telemetries, silent: true),
-              onError: (_) {}));
+          
+          if (endpoint != null && username != null && password != null) {
+            StoreProvider.of<AppState>(context).dispatch(
+                AuthenticateUpdateAction(
+                    endpoint: endpoint,
+                    username: username,
+                    password: password));
+            StoreProvider.of<AppState>(context).dispatch(AuthenticateAction(
+                onSuccess: (Map telemetries) =>
+                    _onSuccess(telemetries, silent: true),
+                onError: (_) {}));
+          }
         });
       } catch (e) {
         logger.e(e);

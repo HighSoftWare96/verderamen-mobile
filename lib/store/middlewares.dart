@@ -38,18 +38,33 @@ void middleware(Store<AppState> store, action, NextDispatcher next) {
     poll(store);
   } else if (action is StopPollingAction && pollingTimer != null) {
     pollingTimer?.cancel();
+  } else if (action is LogoutAction) {
+    pollingTimer?.cancel();
+    clearCredentials().then((_) {
+      if (action.onSuccess != null) {
+        action.onSuccess!();
+      }
+      store.dispatch(LogoutCompleteAction());
+    });
   }
 
   next(action);
 }
 
-void saveCredentialsForNextUse(
+Future saveCredentialsForNextUse(
     {required String endpoint,
     required String username,
     required String password}) async {
   await setSecureKey('endpoint', endpoint);
   await setSecureKey('username', username);
   await setSecureKey('password', password);
+}
+
+Future clearCredentials() async {
+  await unsetSecureKey('endpoint');
+  await unsetSecureKey('username');
+  await unsetSecureKey('password');
+  await cleanup();
 }
 
 void poll(Store<AppState> store) {
