@@ -24,21 +24,21 @@ class App extends StatelessWidget {
             navigatorKey: alice.getNavigatorKey(),
             title: 'Verderamen',
             theme: ThemeData.dark().copyWith(
-              primaryColor: const Color(0xFF74BF04), // Blu scuro
+              primaryColor: const Color(0xFF678C30), // Blu scuro
               scaffoldBackgroundColor:
                   const Color(0xFF121212), // Tipico sfondo dark mode
               colorScheme: const ColorScheme.dark().copyWith(
-                primary: const Color(0xFF74BF04), // Blu scuro
+                primary: const Color(0xFF678C30), // Blu scuro
                 secondary: const Color(0xFF0388A6), // Verde chiaro
                 surface: const Color(0xFF37474F), // Colore delle superfici
-                error: const Color(0xFFF24405), // Arancione scuro
+                error: const Color(0xFFBF8C60), // Arancione scuro
                 onPrimary:
                     Colors.white, // Colore del testo sopra il colore primario
-                onSecondary:
-                    Colors.black, // Colore del testo sopra il colore secondario
+                onSecondary: Color(
+                    0xFF212626), // Colore del testo sopra il colore secondario
                 onSurface: Colors.white, // Colore del testo sopra le superfici
-                onError:
-                    Colors.black, // Colore del testo sopra il colore di errore
+                onError: Color(
+                    0xFF212626), // Colore del testo sopra il colore di errore
               ),
               textTheme: const TextTheme(
                 headlineLarge: TextStyle(color: Colors.white),
